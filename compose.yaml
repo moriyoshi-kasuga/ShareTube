@@ -1,0 +1,62 @@
+services:
+  frontend:
+    build:
+      context: frontend
+    volumes:
+      - type: volume
+        source: svelte_node_modules
+        target: /frontend/node_modules
+      - type: volume
+        source: svelte_kit
+        target: /frontend/.svelte-kit
+      - type: bind
+        source: ./frontend/src
+        target: /frontend/src
+    container_name: frontend
+    ports:
+      - 5173:5173
+    working_dir: /frontend
+    depends_on:
+      db:
+        condition: service_healthy
+    tty: true
+  backend:
+    build:
+      context: backend
+    container_name: backend
+    env_file: ./backend/.env.development
+    volumes:
+      - type: bind
+        source: ./backend/mc_receipts/
+        target: /backend/mc_receipts
+    ports:
+      - 3000:3000
+    depends_on:
+      db:
+        condition: service_healthy
+    tty: true
+  db:
+    image: postgres:17.2-bookworm
+    container_name: db
+    volumes:
+      - type: volume
+        source: postgres_data_backend
+        target: /var/lib/postgresql/data/
+      # - type: bind
+      #   source: ./backend/migrations
+      #   target: /docker-entrypoint-initdb.d
+    user: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 1s
+      retries: 10
+
+volumes:
+  postgres_data_backend:
+  svelte_node_modules:
+  svelte_kit:
