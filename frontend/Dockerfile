@@ -2,13 +2,25 @@
 
 ARG NODE_VERSION=23.3
 
-FROM node:${NODE_VERSION}-slim
+FROM node:${NODE_VERSION}-slim AS installer
 
-WORKDIR /frontend
+WORKDIR /install
+
+COPY package*.json ./
+RUN npm ci
+
+FROM installer AS builder
 
 COPY . .
 
-# RUN npm install -g npm@latest && npm i
-RUN npm i
+RUN npm run build
 
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
+FROM builder AS dev
+
+COPY package.json .
+
+CMD ["npm", "run", "dev", "--", "--port", "25000", "--host"]
+
+FROM builder AS prod
+
+CMD ["npm", "run", "start"]
