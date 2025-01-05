@@ -14,15 +14,15 @@ def get_recipes(request: HttpRequest):
         return JsonResponse({"error": "Method not allowed"}, status=405)
     value = request.GET.get("id")
     if value is None:
-        return JsonResponse(json.dumps(RECIPES), safe=False)
+        return JsonResponse({"error": "Please provide recipe id"}, status=400)
     try:
         value = int(value[0])
-        value = RECIPES[value]
-        if value is None:
-            return JsonResponse({"error": "Recipe not found"}, status=404)
-        return JsonResponse(json.dumps(value), safe=False)
     except ValueError:
         return JsonResponse({"error": "Invalid recipe id"}, status=400)
+    value = RECIPES[value]
+    if value is None:
+        return JsonResponse({"error": "Recipe not found"}, status=404)
+    return JsonResponse(json.dumps(value), safe=False)
 
 
 def get_textures(request: HttpRequest):
