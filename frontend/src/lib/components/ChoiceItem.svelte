@@ -1,19 +1,14 @@
 <script lang="ts">
-	import type { Recipe, Texture } from '$lib';
-	import { getRecipe } from '$lib/store.svelte';
-
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	let { selected, items }: { selected: undefined | Recipe[]; items: Texture[] } = $props();
+	let { selected }: { selected: undefined | Recipe[] } = $props();
 
-	async function select(id: number) {
-		selected = await getRecipe(id);
-	}
+	async function select(name: string) {}
 </script>
 
 <div id="ingredients">
-	{#each items as { texture, name, id }}
+	{#each textures as [name, texture]}
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<div class="grid" role="button" tabindex="0" onclick={() => select(id)}>
+		<div class="grid" role="button" tabindex="0" onclick={() => select(name)}>
 			<img src={texture} alt={name} />
 		</div>
 	{/each}

@@ -8,6 +8,11 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	declare module '*/textures.json' {
+		const value: [string, string][];
+		export default value;
+	}
 }
 
 export {};
