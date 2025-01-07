@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { type Recipe, type Recipes, type Texture } from '$lib';
 	import ChoiceItem from '../components/ChoiceItem.svelte';
 
-	export let data: { items: Texture[]; recipes: Recipes };
-	let selected = undefined;
+	let selected = $state(undefined);
 </script>
 
-<ChoiceItem {selected} items={data.items} recipes={data.recipes} />
+<div>{JSON.stringify(selected)}</div>
+<ChoiceItem {selected} items={data.items} />

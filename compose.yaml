@@ -24,8 +24,8 @@ services:
     env_file: ./backend/.env.development
     volumes:
       - type: bind
-        source: ./backend
-        target: /backend
+        source: ./backend/api
+        target: /backend/api
     depends_on:
       db:
         condition: service_healthy

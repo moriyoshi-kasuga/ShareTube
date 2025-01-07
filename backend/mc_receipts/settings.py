@@ -131,5 +131,5 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ORIGIN")
+CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ORIGIN").split(" ")
 CORS_PREFLIGHT_MAX_AGE = 60 * 30

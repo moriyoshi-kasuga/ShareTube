@@ -38,7 +38,7 @@ export type Ingredients = [RecipeItem, ...RecipeItem[]];
 /**
  * A dictionary of quoted numerical item IDs. Each ID maps to a list of recipes. There may be multiple different recipes per item (same ID and metadata). The recipes may not be sorted.
  */
-export type Recipes = Map<string, Recipe[]>;
+export type Recipes = Map<number, Recipe[]>;
 /**
  * A shaped recipe is a dictionary of result, inShape and optionally outShape
  */
@@ -66,4 +66,5 @@ export interface ShapelessRecipe {
 export type Texture = {
 	name: string;
 	texture: string;
+	id: number;
 };

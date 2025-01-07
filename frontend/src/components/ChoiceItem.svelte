@@ -1,35 +1,30 @@
 <script lang="ts">
-	import type { Recipe, Recipes, Texture } from '$lib';
+	import type { Recipe, Texture } from '$lib';
+	import { getRecipe } from '$lib/store.svelte';
 
-	let {
-		selected,
-		items,
-		recipes
-	}: { selected: undefined | Recipe; items: Texture[]; recipes: Recipes } = $props();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	let { selected, items }: { selected: undefined | Recipe[]; items: Texture[] } = $props();
+
+	async function select(id: number) {
+		selected = await getRecipe(id);
+	}
 </script>
 
 <div id="ingredients">
-	{#each Object.keys(recipes) as key}
-		<div class="grid">
-			<img src={items[parseInt(key)].texture} alt={items[parseInt(key)].name} />
+	{#each items as { texture, name, id }}
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<div class="grid" role="button" tabindex="0" onclick={() => select(id)}>
+			<img src={texture} alt={name} />
 		</div>
 	{/each}
 </div>
 
-<!-- <div id="ingredients"> -->
-<!-- 	{#each items as { texture, name }} -->
-<!-- 		<div class="grid"> -->
-<!-- 			<img src={texture} alt={name} /> -->
-<!-- 		</div> -->
-<!-- 	{/each} -->
-<!-- </div> -->
-
 <style>
 	#ingredients {
 		display: flex;
+		justify-content: center;
 		flex-wrap: wrap;
 		padding: 10px;
-		margin-top: 10px;
 		background: #c6c6c6;
 		border: 2px solid #373737;
 		border-right-color: #fff;
