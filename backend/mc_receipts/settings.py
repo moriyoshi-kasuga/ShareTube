@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-yss#my(d+9&uh7j4a58na4fk47-^0l=p!n&w=qdm!=c=7dcj)i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["backend"]
+ALLOWED_HOSTS = ["backend", "localhost"]
 
 
 # Application definition
@@ -80,11 +80,11 @@ WSGI_APPLICATION = "mc_receipts.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "backend",
+        "NAME": "postgres",
         "USER": "postgres",
         "PASSWORD": "postgres",
         "HOST": "db",
-        "PORT": "5432",
+        "PORT": 5432,
     }
 }
 

@@ -8,25 +8,31 @@ WORKDIR /backend
 
 COPY requirements.txt .
 
-
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 FROM builder AS dev
+
+ENV CORS_ORIGIN=http://localhost:25000
 
 WORKDIR /backend
 
 COPY . .
 
-RUN python manage.py migrate
+# RUN python3 manage.py makemigrations
+# RUN python3 manage.py migrate
 
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:3000"]
 
 FROM builder AS prod
 
+# TODO: changem this
+ENV CORS_ORIGIN=http://localhost:25000
+
 WORKDIR /backend
 
 COPY . .
 
-RUN python manage.py migrate
+# RUN python3 manage.py makemigrations
+# RUN python3 manage.py migrate
 
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:3000"]

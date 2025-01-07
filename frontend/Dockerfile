@@ -19,6 +19,8 @@ RUN npm run build
 
 FROM builder AS dev
 
+ENV port=25000
+
 WORKDIR /frontend
 
 COPY package.json .
@@ -26,6 +28,9 @@ COPY package.json .
 CMD ["npm", "run", "dev", "--", "--port", "25000", "--host"]
 
 FROM builder AS prod
+
+# TODO: changem this
+ENV port=25000
 
 WORKDIR /frontend
 
