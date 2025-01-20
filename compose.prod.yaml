@@ -1,23 +1,9 @@
 services:
-  frontend:
-    build:
-      context: frontend
-      target: prod
-    container_name: frontend
-    ports:
-      - 25000:25000
-    environment:
-      PORT: 25000
-    depends_on:
-      db:
-        condition: service_healthy
-    tty: true
   backend:
     build:
-      context: backend
       target: prod
     container_name: backend
-    env_file: ./backend/.env
+    env_file: .env
     depends_on:
       db:
         condition: service_healthy
@@ -26,11 +12,11 @@ services:
     image: postgres:17.2-bookworm
     container_name: db
     volumes:
-      - type: volume
-        source: prod_mc_recipes_db
+      - type: bind
+        source: ./prod-db
         target: /var/lib/postgresql/data/
       # - type: bind
-      #   source: ./backend/migrations
+      #   source: ./migrations
       #   target: /docker-entrypoint-initdb.d
     user: postgres
     environment:
@@ -42,6 +28,3 @@ services:
       interval: 1s
       timeout: 1s
       retries: 10
-
-volumes:
-  prod_mc_recipes_db:

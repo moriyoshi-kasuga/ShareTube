@@ -2,12 +2,9 @@ services:
   db:
     image: postgres:17.2-bookworm
     volumes:
-      - type: volume
-        source: postgres_data_backend
+      - type: bind
+        source: ./dev-db
         target: /var/lib/postgresql/data/
-      # - type: bind
-      #   source: ./backend/migrations
-      #   target: /docker-entrypoint-initdb.d
     user: postgres
     environment:
       POSTGRES_DB: postgres
@@ -19,33 +16,15 @@ services:
       interval: 1s
       timeout: 1s
       retries: 10
-  frontend:
-    build:
-      context: frontend
-      target: dev
-    volumes:
-      - type: bind
-        source: ./frontend/src
-        target: /frontend/src
-    container_name: frontend
-    ports:
-      - 25000:25000
-    depends_on:
-      - backend
-    tty: true
   backend:
     build:
-      context: backend
       target: dev
     container_name: backend
     volumes:
       - type: bind
-        source: ./backend/api
-        target: /backend/api
+        source: ./api
+        target: /api
     depends_on:
       db:
         condition: service_healthy
     tty: true
-
-volumes:
-  postgres_data_backend:
