@@ -16,10 +16,10 @@ services:
       interval: 1s
       timeout: 1s
       retries: 10
-  backend:
+  django:
     build:
       target: dev
-    container_name: backend
+    container_name: django
     volumes:
       - type: bind
         source: ./api
@@ -28,3 +28,5 @@ services:
       db:
         condition: service_healthy
     tty: true
+    ports:
+      - 3000:3000
