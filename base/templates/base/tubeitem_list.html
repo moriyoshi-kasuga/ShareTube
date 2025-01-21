@@ -2,7 +2,7 @@
 
 <div class="header-bar">
   <div>
-    <h1>Hello {{request.user}}</h1>
+    <h1>All TubeItems</h1>
   </div>
 
   {% if request.user.is_authenticated %}
@@ -11,7 +11,10 @@
     <a href="javascript:f_logout.submit()" >Logout</a>
   </form> 
   {% else %}
-  <a href="{% url 'login' %}">Login</a> {% endif %}
+  <a href="{% url 'login' %}">Login</a> 
+  {% endif %}
+
+  <a href="{% url 'user-tubeitems' %}">Your TubeItems</a>
 </div>
 
 <div id="search-add-wrapper">
@@ -19,44 +22,35 @@
     <input
       type="text"
       name="search-area"
-      placeholder="Search your task"
+      placeholder="Search tubeitem"
       value="{{search_input}}"
     />
     <input class="button" type="submit" value="Search" />
   </form>
-  {% if tasks|length > 0 %}
-  <a id="add-link" href="{% url 'task-create' %}">&#x2b;</a>
+  {% if tubeitems|length > 0 %}
+  <a id="add-link" href="{% url 'tubeitem-create' %}">&#x2b;</a>
   {% endif %}
 </div>
 
-<div id="tasklist" class="task-items-wrapper">
-  {% for task in tasks %}
-  <div class="task-wrapper" data-position="{{task.pk}}">
-    <div class="task-title">
-      {% if task.complete %}
-      <div class="task-complete-icon"></div>
-      <i
-        ><s><a href="{% url 'task-update' task.id %}">{{task}}</a></s></i
-      >
-      {% else %}
-      <div class="task-incomplete-icon"></div>
-      <a href="{% url 'task-update' task.id %}">{{task}}</a> {% endif %}
-    </div>
-    <div class="task-controls">
-      <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
-      <span class="handle">&nbsp;&#10247;</span>
+<div id="tubeitemlist" class="tubeitem-items-wrapper">
+  {% for tubeitem in tubeitems %}
+  <div class="tubeitem-wrapper">
+    <iframe width="360" height="220" src="https://www.youtube.com/embed/{{tubeitem.url}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <div class="tubeitem-desc">
+      <img width="32" height="32" src="https://ui-avatars.com/api/?size=32&rounded=true&name={{tubeitem.user}}"/>
+      <span class="tubeitem-text">{{tubeitem.description}}</span>
     </div>
   </div>
 
   {% empty %}
   <div style="text-align: center; padding-bottom: 10px; line-height: 1em">
-    <h3>No new tasks are created.</h3>
+    <h3>No new tubeitems are created.</h3>
     <h3>
       Create a
       <a
         style="text-decoration: none; color: #e53935"
-        href="{% url 'task-create' %}"
-        >New task</a
+        href="{% url 'tubeitem-create' %}"
+        >First tubeitem</a
       >
       !
     </h3>
