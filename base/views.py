@@ -1,4 +1,6 @@
 import re
+import requests
+from bs4 import BeautifulSoup
 
 from django import forms
 from django.contrib.auth import get_user_model, login
@@ -68,7 +70,7 @@ class UserTaskList(LoginRequiredMixin, ListView):
         search_input = self.request.GET.get("search-area") or ""
         if search_input:
             context["tubeitems"] = context["tubeitems"].filter(
-                url__contains=search_input
+                title__contains=search_input
             )
 
         context["search_input"] = search_input
@@ -87,7 +89,7 @@ class TaskList(ListView):
         search_input = self.request.GET.get("search-area") or ""
         if search_input:
             context["tubeitems"] = context["tubeitems"].filter(
-                url__contains=search_input
+                title__contains=search_input
             )
 
         context["search_input"] = search_input
@@ -116,6 +118,17 @@ class TaskCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+
+        r = requests.get("https://www.youtube.com/watch?v=" + form.instance.url)
+        soup = BeautifulSoup(r.text, "html.parser")
+
+        link = soup.find_all(name="title")[0]
+        title = str(link)
+        title = title.replace("<title>", "")
+        title = title.replace("</title>", "")
+
+        form.instance.title = title
+
         return super(TaskCreate, self).form_valid(form)
 
 
