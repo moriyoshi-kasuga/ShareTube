@@ -5,6 +5,7 @@ services:
       - type: bind
         source: ./dev-db
         target: /var/lib/postgresql/data/
+    container_name: db
     user: postgres
     environment:
       POSTGRES_DB: postgres

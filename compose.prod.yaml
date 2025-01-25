@@ -9,22 +9,16 @@ services:
         condition: service_healthy
     tty: true
     ports:
-      - 3000:3000
+      - 25000:3000
   db:
     image: postgres:17.2-bookworm
     container_name: db
-    volumes:
-      - type: bind
-        source: ./prod-db
-        target: /var/lib/postgresql/data/
-      # - type: bind
-      #   source: ./migrations
-      #   target: /docker-entrypoint-initdb.d
     user: postgres
     environment:
+      POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: django
+      POSTGRES_PORT: 5432
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 1s
