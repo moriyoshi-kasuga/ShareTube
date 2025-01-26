@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,9 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-yss#my(d+9&uh7j4a58na4fk47-^0l=p!n&w=qdm!=c=7dcj)i"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ['DEBUG_VALUE'] == 'TRUE'
 
-ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["https://share-tube.moridns.com", "http://localhost:3000"]
+
+ALLOWED_HOSTS = ["share-tube.moridns.com", "localhost"]
 
 
 # Application definition

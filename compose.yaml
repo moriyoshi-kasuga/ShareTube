@@ -21,6 +21,8 @@ services:
     build:
       target: dev
     container_name: django
+    environment:
+      DEBUG_VALUE: TRUE
     volumes:
       - type: bind
         source: .

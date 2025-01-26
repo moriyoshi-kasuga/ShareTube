@@ -3,10 +3,11 @@ services:
     build:
       target: prod
     container_name: django
-    env_file: .env
     depends_on:
       db:
         condition: service_healthy
+    environment:
+      DEBUG_VALUE: FALSE
     tty: true
     ports:
       - 25000:3000
